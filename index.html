@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insert Name</title>
+</head>
+<body>
+    <h1>Insert Name</h1>
+    <form id="nameForm">
+        <label for="nameInput">Name:</label>
+        <input type="text" id="nameInput" name="nameInput" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    <div id="message"></div>
+
+    <script>
+        document.getElementById('nameForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('nameInput').value;
+            fetch('/names', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: name })
+            })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('message').textContent = 'Name saved successfully';
+                } else {
+                    document.getElementById('message').textContent = 'Error saving name to database';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('message').textContent = 'Error saving name to database';
+            });
+        });
+    </script>
+</body>
+</html>

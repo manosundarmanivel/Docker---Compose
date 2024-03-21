@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  mongo-service:
+    container_name: db_container
+    image: mongo:latest
+    restart: always
+    volumes:
+      - mongo_db:/data/db
+
+  api-service:
+    build: ./nodejs
+    ports:
+      - 4000:3000
+    environment:
+      PORT: 3000
+      MONGODB_URI: mongodb://mongo-service:27017/
+      DB_NAME: my_db
+      NAME: mano
+    
+    depends_on:
+      - mongo-service
+
+volumes:
+  mongo_db: {}
